@@ -42,10 +42,10 @@ in order to monitor a large area for the presence of ground-based radars in the 
 2. Where it says “Display imagery aggregated by”, select “Year” from the dropdown menu. 
 
 3. Click on a random date in each year to load data from that entire year
-- For example, clicking on June 10th, 2018 will load a composite image for all of 2018.
-- Repeat this for each year. 
+    - For example, clicking on June 10th, 2018 will load a composite image for all of 2018.
+    - Repeat this for each year. 
 
-4.If you spot interference, click on it to reveal the dates that the signal is detected. 
+4. If you spot interference, click on it to reveal the dates that the signal is detected. 
 
 5. Zoom to the interference stripe and gradually decrease opacity to find the source of the interference using the high resolution satellite basemap. 
 
