@@ -2,7 +2,7 @@
 
 # A Tour of the Bellingcat Radar Interference Tracker
 
-Below is a screenshot of the tool in use with five labeled components, each of which we will look at individually. In this example, the tool is centered on a MIM-104 Patriot PAC-2 missile defense system stationed in Dammam, Saudi Arabia. The imagery displayed is an aggregate of the collection of radar interference from January, 2022. 
+Below is a screenshot of the tool in use with five labeled components, each of which we will look at individually. In this example, the tool is centered on a MIM-104 Patriot PAC-2 missile defense system stationed in Dammam, Saudi Arabia. The imagery displayed is an aggregate images taken in January, 2022. 
 
 ![](Images/RIT.png)
 
