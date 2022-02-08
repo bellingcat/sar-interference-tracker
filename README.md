@@ -1,4 +1,4 @@
-Many military radars interfere with open source satellite imagery when they're turned on. A new [tool](https://ollielballinger.users.earthengine.app/view/bellingcat-radar-interference-tracker) lets anyone monitor when and where these radars are deployed. This repository contains the source code for this tool. 
+*Many military radars interfere with open source satellite imagery when they're turned on. A new [tool](https://ollielballinger.users.earthengine.app/view/bellingcat-radar-interference-tracker) lets anyone monitor when and where these radars are deployed. This repository contains the source code for this tool.* 
 
 # A Tour of the Bellingcat Radar Interference Tracker
 
