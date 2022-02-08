@@ -32,3 +32,20 @@ In the simplest terms, this means that when the radar on the likes of a Patriot 
 Sentinel-1 works by illuminating a 250km long and 5km wide swath of land below the satellite with a pulse of C-band radio waves (shown as the red triangle). If interference is detected, its source (depicted as a yellow dot above) will be located somewhere within this swath. 
 
 Other military radars that operate on the same C-band frequency include naval radars such as the Japanese FCS-3, the Chinese Type-381 and the Russian S-400 Surface to Air Missile system. All should be detectable when switched on and in view of Sentinel-1.
+
+# How to find a military radar
+
+in order to monitor a large area for the presence of ground-based radars in the past seven years, follow these steps:
+
+1. Navigate to your area of interest by dragging the map and zooming in or out. 
+
+2. Where it says “Display imagery aggregated by”, select “Year” from the dropdown menu. 
+
+3. Click on a random date in each year to load data from that entire year
+- For example, clicking on June 10th, 2018 will load a composite image for all of 2018.
+- Repeat this for each year. 
+
+4.If you spot interference, click on it to reveal the dates that the signal is detected. 
+
+5. Zoom to the interference stripe and gradually decrease opacity to find the source of the interference using the high resolution satellite basemap. 
+
