@@ -32,6 +32,3 @@ In the simplest terms, this means that when the radar on the likes of a Patriot 
 Sentinel-1 works by illuminating a 250km long and 5km wide swath of land below the satellite with a pulse of C-band radio waves (shown as the red triangle). If interference is detected, its source (depicted as a yellow dot above) will be located somewhere within this swath. 
 
 Other military radars that operate on the same C-band frequency include naval radars such as the Japanese FCS-3, the Chinese Type-381 and the Russian S-400 Surface to Air Missile system. All should be detectable when switched on and in view of Sentinel-1.
-
-<iframe title="Radio Frequency Interference at (lon:39.51, lat:50.96)" aria-label="Interactive line chart" id="datawrapper-chart-e7IeQ" src="https://datawrapper.dwcdn.net/e7IeQ/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="400"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
-</script>
