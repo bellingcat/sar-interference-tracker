@@ -1,4 +1,8 @@
 // This is the source code for the Bellingcat Radar Interference Tracker.
+// Tool Link: https://ollielballinger.users.earthengine.app/view/bellingcat-radar-interference-tracker
+// GEE Link: https://code.earthengine.google.com/23c69d3233af216ff7b6c357bdb6b143
+
+
 // The tool provides a user interface which enables the analysis of Radio Frequency Interference (RFI)
 // Most of the RFI caused by ground-based systems are military radars
 // Investigating the spatial and temporal characteristics of the signal can yield information on the deployment of military radar systems
