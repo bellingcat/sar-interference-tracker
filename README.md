@@ -19,17 +19,17 @@ Below is a screenshot of the tool in use with five labeled components, each of w
 
 # How it works
 
-While most satellite imagery is optical, meaning it captures sunlight reflected by the earth’s surface, Synthetic Aperture Radar (SAR) satellites such as Sentinel-1 work by emitting pulses of C-band radio waves and measuring how much of the signal is reflected back. This is similar to the way a bat uses sonar to “see” in the dark: by emitting calls and listening to echoes.
+While most satellite imagery is optical, meaning it captures sunlight reflected by the earth’s surface, Synthetic Aperture Radar (SAR) satellites such as Sentinel-1 work by emitting pulses of radio waves and measuring how much of the signal is reflected back. This is similar to the way a bat uses sonar to “see” in the dark: by emitting calls and listening to echoes.
 
 ![](Images/SAR.png)
 
-Coincidentally, the radars on some missile defence batteries (such as the MIM-104 Patriot PAC-2) and other military radars operate using frequencies in the NATO G-band (4,000 to 6,000 Gigahertz) which overlaps with the civilian C-band (4,000, to 8,000 Gigahertz), commonly used by open source SAR satellites.  
+Coincidentally, the radars on some missile defence batteries and other military radars operate using frequencies in the NATO G-band (4,000 to 6,000 Gigahertz) which overlaps with the civilian C-band (4,000, to 8,000 Gigahertz), commonly used by open source SAR satellites.  
 
-In the simplest terms, this means that when the radar on the likes of a Patriot battery is turned on, Sentinel-1 picks up both the echo from its own pulse of radio waves, as well as a powerful blast of radio waves from the ground-based radar. This shows up as a stripe of interference perpendicular to the orbital pass of the satellites: 
+In the simplest terms, this means that when the radar on the likes of a Patriot battery is turned on, Sentinel-1 picks up both the echo from its own pulse of radio waves, as well as a powerful blast of radio waves from the ground-based radar. This shows up as a stripe of interference perpendicular to the orbital path of the satellite: 
 
 ![](Images/RFI_localization_1.png)
 
-Sentinel-1 works by illuminating a 250km long and 5km wide swath of land below the satellite with a pulse of C-band radio waves (shown as the red triangle). If interference is detected, its source (depicted as a yellow dot above) will be located somewhere within this swath. 
+Sentinel-1 works by illuminating a 250 kilometre (km) long and 5km wide swath of land below the satellite with a pulse of C-band radio waves. If a powerful ground-based radar creates interference, the entire 250-by-5 km swath in which it is located will be affected, creating a bright stripe in the image.
 
 Other military radars that operate on the same C-band frequency include naval radars such as the Japanese FCS-3, the Chinese Type-381 and the Russian S-400 Surface to Air Missile system. All should be detectable when switched on and in view of Sentinel-1.
 
