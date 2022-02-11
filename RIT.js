@@ -1,8 +1,4 @@
 // This is the source code for the Bellingcat Radar Interference Tracker.
-// Tool Link: https://ollielballinger.users.earthengine.app/view/bellingcat-radar-interference-tracker
-// GEE Link: https://code.earthengine.google.com/23c69d3233af216ff7b6c357bdb6b143
-
-
 // The tool provides a user interface which enables the analysis of Radio Frequency Interference (RFI)
 // Most of the RFI caused by ground-based systems are military radars
 // Investigating the spatial and temporal characteristics of the signal can yield information on the deployment of military radar systems
@@ -20,7 +16,7 @@
 // 9. Map Setup
 // 10. Initialize App
 
-// For queries, please contact ollie.ballinger@sant.ox.ac.uk
+// For queries, please contact @oballinger
 
 // --------------------- Step 1: Load Data  --------------------------------
 
@@ -48,6 +44,8 @@ var vh = sentinel1
 var vhA = vh.filter(ee.Filter.eq("orbitProperties_pass", "ASCENDING"));
 var vhD = vh.filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING"));
 
+//print(ee.Date(vhD.first().get('system:time_start')))
+print(vhD.filter(ee.Filter.eq("platform_number", "A")).first());
 // --------------------- Step 2: Configure Map  --------------------------------
 
 // Create the main map
@@ -248,14 +246,21 @@ var dateSlider = ui
 // --------------------- Step 7: Create RFI Chart  --------------------------------
 
 // Create panels to hold lon/lat values.
-var lon = ui.Label();
-var lat = ui.Label();
+
+var latlon = ui.Label();
+// possible future option to let people report radars using google form
+// var latlon = ui.Label('', {}, 'https://docs.google.com/forms/d/e/1FAIpQLSeyzIGmxjRaFb0DRXfnOgpY3k46P1daKAeRGVeY8QedkSHT0w/viewform?usp=pp_url&entry.1697422577=26.61,+49.95');
 
 // Generates a new time series chart of RFI for the given coordinates.
 var generateChart = function (coords) {
   // Update the lon/lat panel with values from the click event.
-  lon.setValue("lon: " + coords.lon.toFixed(2));
-  lat.setValue("lat: " + coords.lat.toFixed(2));
+  var latlonStr = coords.lat.toFixed(2) + ", " + coords.lon.toFixed(2);
+
+  latlon.setValue("Coordinates: " + latlonStr);
+
+  // google form integration
+  //latlon.setValue("Report a Radar at these coordinates: " + latlonStr);
+  //latlon.setUrl('https://docs.google.com/forms/d/e/1FAIpQLSeyzIGmxjRaFb0DRXfnOgpY3k46P1daKAeRGVeY8QedkSHT0w/viewform?usp=pp_url&entry.1697422577='+latlonStr);
 
   // Add a dot for the point clicked on.
   var point = ee.FeatureCollection(ee.Geometry.Point(coords.lon, coords.lat));
@@ -442,6 +447,12 @@ var loc1_function = function () {
   );
 
   configureExample([lab1, link, lab2, lab3], 0.1);
+
+  mapPanel.addLayer(outline, {
+    palette: ["black", "red", "green", "blue"],
+    min: 0,
+    max: 3,
+  });
 };
 
 // Dimona Radar Facility
@@ -455,7 +466,7 @@ var loc2_function = function () {
     "The radar can monitor the take-off of any aircraft or missile up to 1,500 miles away, which would give Israel an extra 60-70 seconds to react if Iran fired a missile. The radar is so powerful that Israeli officials feared that RFI would impact the accuracy of anti-tank missiles being tested nearby."
   );
   var lab3 = ui.Label(
-    "Israel's Negev Nuclear Research Center is located in the same valley, just a few kilometers to the north. The RFI Graph above shows consistent and strong interference since 2017."
+    "Though the point is centered on the large X-band radar antenna, the actual source of the observed RFI seems to be Israel's Negev Nuclear Research Center, located in the same valley just a few kilometers to the north. The RFI Graph above shows consistent and strong interference since 2017."
   );
 
   configureExample([lab1, lab2, lab3], 0.8);
@@ -492,6 +503,15 @@ var loc4_function = function () {
   configureExample([lab1, lab2], 0.8);
 };
 
+// Kashmir
+var loc5_function = function () {
+  var lab1 = ui.Label(
+    "The RFI graph shows periodic radar activity in Kashmir since 2018. This case illustrates a useful tip when using this tool; RFI can be measured with greater precision over water because there's less background noise."
+  );
+
+  configureExample([lab1], 0.8);
+};
+
 // Some pre-set locations of interest that will be loaded into a pulldown menu.
 // Dict contains the coordinates, zoom level, date range, and function to be triggered when navigating to these locations
 var locationDict = {
@@ -522,6 +542,13 @@ var locationDict = {
     zoom: 10,
     date: "2021-12-14",
     func: loc4_function,
+  },
+  "Kashmir, India/Pakistan Border": {
+    lon: 73.79,
+    lat: 33.18,
+    zoom: 10,
+    date: "2022-01-15",
+    func: loc5_function,
   },
 };
 
@@ -567,7 +594,7 @@ mapPanel.centerObject(initialPoint, 11);
 // Add all of the modules created above to the User Interface Panel
 inspectorPanel.add(intro);
 inspectorPanel.add(dateSlider);
-inspectorPanel.add(ui.Panel([lon, lat], ui.Panel.Layout.flow("horizontal")));
+inspectorPanel.add(ui.Panel([latlon], ui.Panel.Layout.flow("horizontal")));
 inspectorPanel.add(ui.Label("placeholder"));
 inspectorPanel.add(
   ui.Label(
@@ -586,7 +613,7 @@ inspectorPanel.add(
 );
 inspectorPanel.add(viewPanel);
 inspectorPanel.add(locationPanel);
-inspectorPanel.widgets().set(11, contact);
+inspectorPanel.add(contact);
 
 // --------------------- Step 10: Initialize  --------------------------------
 
