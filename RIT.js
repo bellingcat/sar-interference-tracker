@@ -3,6 +3,7 @@
 // Most of the RFI caused by ground-based systems are military radars
 // Investigating the spatial and temporal characteristics of the signal can yield information on the deployment of military radar systems
 
+
 // Below is an overview of the 10 sections
 
 // 1. Load Data
@@ -44,8 +45,6 @@ var vh = sentinel1
 var vhA = vh.filter(ee.Filter.eq("orbitProperties_pass", "ASCENDING"));
 var vhD = vh.filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING"));
 
-//print(ee.Date(vhD.first().get('system:time_start')))
-print(vhD.filter(ee.Filter.eq("platform_number", "A")).first());
 // --------------------- Step 2: Configure Map  --------------------------------
 
 // Create the main map
@@ -106,33 +105,35 @@ var layerProperties = {
 
 // Get keys from dictionary
 var selectItems = Object.keys(layerProperties);
+var defaultLayer = 1;
 
-// Create dropdown menu to toggle between imagery aggregated at different timescales
-var layerSelect = ui.Select({
-  items: selectItems,
-  value: selectItems[1],
-  onChange: function (selected) {
-    // Loop through the map layers and compare the selected element to the name
-    // of the layer. If they're the same, show the layer and set the
-    // corresponding legend.  Hide the others.
-    mapPanel.layers().forEach(function (element, index) {
-      element.setShown(selected == element.getName());
+// Create dropdown menfu to toggle between imagery aggregated at different timescales
+var layerSelect = ui
+  .Select({
+    items: selectItems,
+    onChange: function (selected) {
+      // Loop through the map layers and compare the selected element to the name
+      // of the layer. If they're the same, show the layer and set the
+      // corresponding legend.  Hide the others.
+      mapPanel.layers().forEach(function (element, index) {
+        element.setShown(selected == element.getName());
 
-      var dict = {
-        Day: "daily",
-        Month: "monthly",
-        Year: "yearly",
-      };
+        var dict = {
+          Day: "daily",
+          Month: "monthly",
+          Year: "yearly",
+        };
 
-      // Add a line that provides information on the level of aggregation of the imagery currently being shown
-      image_info.setValue(
-        "You are currently viewing " +
-          dict[selected] +
-          " Sentinel-1 imagery from "
-      );
-    });
-  },
-});
+        // Add a line that provides information on the level of aggregation of the imagery currently being shown
+        image_info.setValue(
+          "You are currently viewing " +
+            dict[selected] +
+            " Sentinel-1 imagery from "
+        );
+      });
+    },
+  })
+  .setValue(selectItems[defaultLayer]);
 
 // --------------------- Step 5: Create Opacity Slider  --------------------------------
 
@@ -162,7 +163,7 @@ var viewPanel = ui.Panel({
 
 // Get date range for Sentinel-1 imagery, backdate current date by one week to ensure imagery is available
 var start = ee.Date(sentinel1.first().get("system:time_start"));
-var now = ee.Date(Date.now()).advance(-1, "week");
+var now = ee.Date(Date.now()); //.advance(-1, "week");
 
 // Format date to display it to the user
 var date = ui.Label(now.format("MMMM dd, YYYY").getInfo());
@@ -232,16 +233,14 @@ var slide = function (range) {
 };
 
 // Create dateSlider to trigger the function Slide function
-var dateSlider = ui
-  .DateSlider({
-    start: start,
-    end: now,
-    value: null,
-    period: 1,
-    onChange: slide,
-    style: { height: "0px" },
-  })
-  .setValue(now);
+var dateSlider = ui.DateSlider({
+  start: start,
+  end: now,
+  value: null,
+  period: 1,
+  onChange: slide,
+  style: { height: "0px" },
+});
 
 // --------------------- Step 7: Create RFI Chart  --------------------------------
 
@@ -254,6 +253,10 @@ var latlon = ui.Label();
 // Generates a new time series chart of RFI for the given coordinates.
 var generateChart = function (coords) {
   // Update the lon/lat panel with values from the click event.
+  ui.url.set("lon", coords.lon.toFixed(4));
+  ui.url.set("lat", coords.lat.toFixed(4));
+  ui.url.set("zoom", mapPanel.getZoom());
+
   var latlonStr = coords.lat.toFixed(2) + ", " + coords.lon.toFixed(2);
 
   latlon.setValue("Coordinates: " + latlonStr);
@@ -291,6 +294,10 @@ var generateChart = function (coords) {
   inspectorPanel.widgets().set(3, rfiChart);
   var getDate = function (callback) {
     dateSlider.setValue(ee.Date(callback));
+    ui.url.set("date", ee.Date(callback).format().getInfo());
+    print(ee.Date(ee.Date(callback).format().getInfo()));
+
+    var now = ee.Date(callback);
   };
   rfiChart.onClick(getDate);
 };
@@ -458,15 +465,15 @@ var loc1_function = function () {
 // Dimona Radar Facility
 var loc2_function = function () {
   var lab1 = ui.Label(
-    'Located in Israel\'s Negev Desert, the Dimona Radar Facility is a "top-secret X-band radar staffed by around 120 American technicians".',
+    "Located in Israel's Negev Desert, the Dimona Radar Facility is an X-band radar operated by the U.S. Military.",
     {},
-    "http://content.time.com/time/world/article/0,8599,1846749,00.html"
+    "https://web.archive.org/web/20081009203106/http://afp.google.com/article/ALeqM5gJP55YHdqMPMI7rhCh3tZCGxl0Pw"
   );
   var lab2 = ui.Label(
-    "The radar can monitor the take-off of any aircraft or missile up to 1,500 miles away, which would give Israel an extra 60-70 seconds to react if Iran fired a missile. The radar is so powerful that Israeli officials feared that RFI would impact the accuracy of anti-tank missiles being tested nearby."
+    "Though the point is centered on these large radar antennae, an X-band radar would probably not interfere with Sentinel-1's C-band instrument. The actual source of the observed RFI seems to be Israel's Negev Nuclear Research Center, \"a top-secret military site where Israel is widely believed to have developed the only nuclear arsenal in the Middle East\", located in the same valley just a few kilometers to the north. The radar was installed in 2008 to provide early warning against possible Iranian missile attacks. "
   );
   var lab3 = ui.Label(
-    "Though the point is centered on the large X-band radar antenna, the actual source of the observed RFI seems to be Israel's Negev Nuclear Research Center, located in the same valley just a few kilometers to the north. The RFI Graph above shows consistent and strong interference since 2017."
+    "The RFI Graph above shows consistent and strong interference since 2015."
   );
 
   configureExample([lab1, lab2, lab3], 0.8);
@@ -584,16 +591,32 @@ var locationPanel = ui.Panel([
 mapPanel.onClick(generateChart);
 
 // Configure the map.
-mapPanel.setOptions("Satellite");
+mapPanel.setOptions("Hybrid");
 mapPanel.style().set("cursor", "crosshair");
 
 // Initialize with a test point.
 var initialPoint = ee.Geometry.Point(49.950656, 26.605644);
-mapPanel.centerObject(initialPoint, 11);
+
+var lon = ui.url.get("lon", -9999);
+var lat = ui.url.get("lat", -9999);
+var zoom = ui.url.get("zoom", -9999);
+var urldate = ui.url.get("date", -9999);
+
+if (lon != -9999 && lat != -9999) {
+  mapPanel.setCenter(lon, lat, zoom);
+  var now = ee.Date(urldate);
+  //var date= ui.Label(urldate.format("MMMM dd, YYYY").getInfo());
+  var initialPoint = ee.Geometry.Point(lon, lat);
+} else {
+  // defauilt location
+  mapPanel.centerObject(initialPoint, 11);
+}
+
+//mapPanel.centerObject(initialPoint, 11);
 
 // Add all of the modules created above to the User Interface Panel
 inspectorPanel.add(intro);
-inspectorPanel.add(dateSlider);
+inspectorPanel.add(dateSlider.setValue(now));
 inspectorPanel.add(ui.Panel([latlon], ui.Panel.Layout.flow("horizontal")));
 inspectorPanel.add(ui.Label("placeholder"));
 inspectorPanel.add(
@@ -628,6 +651,3 @@ generateChart({
 
 // Optional: add country outlines
 // mapPanel.layers().set(5, country_layer)
-
-// Add imagery aggregated by month by default.
-mapPanel.layers().get(1).setShown(true);
